@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JaruratCare | Mini Healthcare Support App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #f4fbf8 0%, #ffffff 100%);
+      color: #16302b;
+    }
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+    .hero {
+      padding: 64px 0 28px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e9f8f1;
+      color: #12724f;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid #d4f0e2;
+    }
+    h1 {
+      margin: 18px 0 12px;
+      font-size: clamp(32px, 6vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 760px;
+    }
+    .sub {
+      max-width: 760px;
+      font-size: 18px;
+      line-height: 1.7;
+      color: #45635c;
+      margin-bottom: 28px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .card {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid #e5f1eb;
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(22, 48, 43, 0.08);
+    }
+    .form-card { padding: 26px; }
+    .side-card { padding: 26px; }
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .section-text {
+      margin: 0 0 22px;
+      color: #5b746d;
+      line-height: 1.6;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .full { grid-column: 1 / -1; }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #27443d;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 14px;
+      border: 1px solid #d6e7df;
+      background: #fbfefd;
+      font: inherit;
+      color: #16302b;
+      outline: none;
+      transition: 0.2s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #2fb675;
+      box-shadow: 0 0 0 4px rgba(47,182,117,0.12);
+      background: #fff;
+    }
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+    .btn {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, #1da966, #158a6b);
+      color: white;
+      box-shadow: 0 14px 30px rgba(29, 169, 102, 0.25);
+    }
+    .btn-secondary {
+      background: #eef7f3;
+      color: #1b5d49;
+    }
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .info-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .info-box {
+      background: #f7fbf9;
+      border: 1px solid #e4f0ea;
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .info-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+    .result-card {
+      margin-top: 26px;
+      padding: 22px;
+      display: none;
+    }
+    .result-card.show { display: block; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .priority-high { background: #ffe6e6; color: #b42318; }
+    .priority-medium { background: #fff4db; color: #b56a00; }
+    .priority-low { background: #e8f8ee; color: #157347; }
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .result-box {
+      background: #f9fcfb;
+      border: 1px solid #e5f1eb;
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .result-box h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+    .small {
+      color: #5b746d;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .footer {
+      padding: 28px 0 52px;
+      color: #607870;
+      text-align: center;
+      font-size: 14px;
+    }
+    .saved-list {
+      margin-top: 16px;
+      display: grid;
+      gap: 12px;
+      max-height: 320px;
+      overflow: auto;
+    }
+    .saved-item {
+      border: 1px solid #e5f1eb;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fcfefd;
+    }
+    .saved-item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .saved-item strong { font-size: 15px; }
+    .meta { color: #67817a; font-size: 13px; }
+    @media (max-width: 900px) {
+      .hero-grid, .result-grid, form {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container">
+      <span class="pill">🚑 JaruratCare • Mini Healthcare Support App</span>
+      <h1>Fast patient support intake with a simple AI-powered urgency check.</h1>
+      <p class="sub">
+        This concept-level web app helps NGOs or healthcare volunteers collect patient requests,
+        summarize them automatically, and identify priority level for faster response.
+      </p>
+
+      <div class="hero-grid">
+        <div>
+          <div class="card form-card">
+            <h2 class="section-title">Patient Help Request Form</h2>
+            <p class="section-text">Fill out the details below. After submission, the app will generate a short case summary and detect urgency automatically.</p>
+
+            <form id="supportForm">
+              <div>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter patient name" required>
+              </div>
+              <div>
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter contact number" required>
+              </div>
+              <div>
+                <label for="location">Location</label>
+                <input type="text" id="location" placeholder="City / Area" required>
+              </div>
+              <div>
+                <label for="requestType">Support Type</label>
+                <select id="requestType" required>
+                  <option value="">Select support type</option>
+                  <option>Medicine Support</option>
+                  <option>Doctor Consultation</option>
+                  <option>Home Care Assistance</option>
+                  <option>Emergency Help</option>
+                  <option>Volunteer Assistance</option>
+                </select>
+              </div>
+              <div class="full">
+                <label for="problem">Describe the Problem</label>
+                <textarea id="problem" placeholder="Example: My father is diabetic and needs insulin support urgently in Adajan, Surat." required></textarea>
+              </div>
+              <div class="full button-row">
+                <button class="btn btn-primary" type="submit">Analyze & Submit Request</button>
+                <button class="btn btn-secondary" type="button" id="clearBtn">Clear Form</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card result-card" id="resultCard">
+            <div id="priorityBadge" class="badge priority-low">Priority: Low</div>
+            <div class="result-grid">
+              <div class="result-box">
+                <h3>AI Summary</h3>
+                <div id="summaryText" class="small"></div>
+              </div>
+              <div class="result-box">
+                <h3>Automation Insight</h3>
+                <div id="automationText" class="small"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card side-card">
+            <h2 class="section-title">Why this fits the NGO use-case</h2>
+            <p class="section-text">The app is designed for NGOs, volunteers, or community healthcare teams that need to quickly understand incoming requests and decide which case needs immediate attention.</p>
+            <div class="info-list">
+              <div class="info-box">
+                <strong>🤖 AI / Automation Idea</strong>
+                Keyword-based urgency detection and instant text summarization for patient support requests.
+              </div>
+              <div class="info-box">
+                <strong>⚡ Practical Value</strong>
+                Reduces manual effort in reading long messages and helps volunteers focus first on critical cases.
+              </div>
+              <div class="info-box">
+                <strong>📦 Data Handling</strong>
+                Submitted requests are stored locally in the browser using localStorage for demo purposes.
+              </div>
+            </div>
+
+            <div class="saved-list" id="savedList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer container">
+    Built as a concept-level mini healthcare support prototype for internship evaluation.
+  </div>
+
+  <script>
+    const form = document.getElementById('supportForm');
+    const resultCard = document.getElementById('resultCard');
+    const priorityBadge = document.getElementById('priorityBadge');
+    const summaryText = document.getElementById('summaryText');
+    const automationText = document.getElementById('automationText');
+    const clearBtn = document.getElementById('clearBtn');
+    const savedList = document.getElementById('savedList');
+
+    const urgencyKeywords = {
+      high: ['urgent', 'emergency', 'critical', 'immediately', 'asap', 'severe', 'bleeding', 'accident', 'oxygen', 'icu', 'insulin', 'not breathing', 'chest pain'],
+      medium: ['pain', 'fever', 'weakness', 'infection', 'dizzy', 'needs medicine', 'support', 'consultation'],
+      low: ['general', 'checkup', 'information', 'guidance', 'routine']
+    };
+
+    function detectPriority(text, selectedType) {
+      const lower = text.toLowerCase();
+      let score = 0;
+
+      urgencyKeywords.high.forEach(word => { if (lower.includes(word)) score += 3; });
+      urgencyKeywords.medium.forEach(word => { if (lower.includes(word)) score += 2; });
+      urgencyKeywords.low.forEach(word => { if (lower.includes(word)) score += 1; });
+
+      if (selectedType === 'Emergency Help') score += 4;
+      if (text.length > 180) score += 1;
+
+      if (score >= 6) return 'High';
+      if (score >= 3) return 'Medium';
+      return 'Low';
+    }
+
+    function createSummary(name, type, location, problem) {
+      const cleanProblem = problem.trim().replace(/\s+/g, ' ');
+      const shortened = cleanProblem.length > 90 ? cleanProblem.slice(0, 90).trim() + '...' : cleanProblem;
+      return `${name} requested ${type.toLowerCase()} in ${location}. Case summary: ${shortened}`;
+    }
+
+    function getAutomationInsight(priority) {
+      if (priority === 'High') {
+        return 'This case should be reviewed first by the NGO or volunteer team. The app flags it as high priority based on emergency-related words or severe condition indicators.';
+      }
+      if (priority === 'Medium') {
+        return 'This case needs timely attention. The app detected moderate health-related urgency and suggests follow-up soon.';
+      }
+      return 'This case appears non-critical. The request can be handled in the regular support queue unless manually escalated.';
+    }
+
+    function renderSavedRequests() {
+      const requests = JSON.parse(localStorage.getItem('jaruratcare_requests') || '[]');
+      if (!requests.length) {
+        savedList.innerHTML = '<div class="info-box"><strong>📋 Demo Records</strong>No patient requests stored yet. Submit the form to create a demo record.</div>';
+        return;
+      }
+
+      savedList.innerHTML = '<div class="info-box"><strong>📋 Recent Demo Requests</strong>These are stored in your browser for assignment demonstration.</div>' + requests.slice().reverse().map(item => `
+        <div class="saved-item">
+          <div class="saved-item-top">
+            <strong>${item.name}</strong>
+            <span class="badge ${item.priority === 'High' ? 'priority-high' : item.priority === 'Medium' ? 'priority-medium' : 'priority-low'}">${item.priority}</span>
+          </div>
+          <div class="meta">${item.requestType} • ${item.location}</div>
+          <div class="small" style="margin-top:8px;">${item.summary}</div>
+        </div>
+      `).join('');
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const location = document.getElementById('location').value.trim();
+      const requestType = document.getElementById('requestType').value;
+      const problem = document.getElementById('problem').value.trim();
+
+      const priority = detectPriority(problem, requestType);
+      const summary = createSummary(name, requestType, location, problem);
+      const insight = getAutomationInsight(priority);
+
+      summaryText.textContent = summary;
+      automationText.textContent = insight;
+      priorityBadge.textContent = `Priority: ${priority}`;
+      priorityBadge.className = 'badge ' + (priority === 'High' ? 'priority-high' : priority === 'Medium' ? 'priority-medium' : 'priority-low');
+      resultCard.classList.add('show');
+
+      const stored = JSON.parse(localStorage.getItem('jaruratcare_requests') || '[]');
+      stored.push({ name, phone, location, requestType, problem, priority, summary, createdAt: new Date().toISOString() });
+      localStorage.setItem('jaruratcare_requests', JSON.stringify(stored));
+      renderSavedRequests();
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    clearBtn.addEventListener('click', function() {
+      form.reset();
+      resultCard.classList.remove('show');
+    });
+
+    renderSavedRequests();
+  </script>
+</body>
+</html>
